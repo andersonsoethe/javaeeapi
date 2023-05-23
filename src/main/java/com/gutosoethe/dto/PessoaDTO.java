@@ -1,6 +1,5 @@
 package com.gutosoethe.dto;
 
-import com.gutosoethe.model.Pessoa;
 import com.gutosoethe.vo.PessoaVo;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -45,16 +44,12 @@ public class PessoaDTO implements Serializable {
         this.idade = idade;
     }
 
-    public PessoaDTO(Pessoa pessoa) {
+    public PessoaDTO(PessoaVo pessoa) {
         this.id = pessoa.getId();
         this.nome = pessoa.getNome();
         this.email = pessoa.getEmail();
         this.idade = pessoa.getIdade();
         this.phone = pessoa.getPhone();
-    }
-
-    public PessoaDTO(PessoaVo pessoaVo) {
-
     }
 
     public long getId() {

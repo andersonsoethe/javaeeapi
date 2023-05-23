@@ -65,7 +65,7 @@ public class PessoaRest {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void removerPessoa(@PathParam("id") long id){
+    public void removerPessoa(@PathParam("id") long id) {
         pessoaBo.removerPessoa(id);
     }
 }

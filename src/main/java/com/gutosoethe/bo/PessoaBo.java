@@ -1,6 +1,5 @@
 package com.gutosoethe.bo;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -11,12 +10,11 @@ import javax.transaction.Transactional.TxType;
 import com.gutosoethe.dao.PessoaJpaDao;
 import com.gutosoethe.dto.PessoaDTO;
 import com.gutosoethe.exception.BusinessExecption;
-import com.gutosoethe.generics.GenericPessoaBo;
 import com.gutosoethe.model.Pessoa;
 import com.gutosoethe.vo.PessoaVo;
 
 @ApplicationScoped
-public class PessoaBo implements GenericPessoaBo {
+public class PessoaBo {
 
     @Inject
     private PessoaJpaDao pessoaJpaDao;
@@ -28,7 +26,7 @@ public class PessoaBo implements GenericPessoaBo {
 
     @Transactional(TxType.NOT_SUPPORTED)
     public PessoaVo listarById(long id){
-        return PessoaVo.convert(pessoaJpaDao.getById(id));
+        return PessoaVo.convert(pessoaJpaDao.findById(id));
     }
 
     @Transactional(TxType.REQUIRED)
@@ -46,13 +44,13 @@ public class PessoaBo implements GenericPessoaBo {
     }
 
     @Transactional(TxType.REQUIRED)
-    public void removerPessoa(long pessoaId) throws SQLException {
-        pessoaJpaDao.removeById(pessoaId);
+    public void removerPessoa(long pessoaId) {
+        pessoaJpaDao.delete(pessoaId);
     }
 
     @Transactional(TxType.REQUIRED)
     public void atualizarPessoa(long id, PessoaDTO p) {
-        Pessoa pessoa = pessoaJpaDao.getById(id);
+        Pessoa pessoa = pessoaJpaDao.findById(id);
         if (p.getNome() != null){
             pessoa.setNome(p.getNome());
         }

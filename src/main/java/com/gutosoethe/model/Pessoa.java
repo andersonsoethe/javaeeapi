@@ -1,5 +1,7 @@
 package com.gutosoethe.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "pessoas")
-public class Pessoa extends BasePessoa {
+public class Pessoa implements Serializable {
     private static final long serialVersionUID = 2986558859878113504L;
 
     @Id
