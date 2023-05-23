@@ -1,0 +1,10 @@
+com\gutosoethe\rest\PessoaRest.class
+com\gutosoethe\rest\Resource.class
+com\gutosoethe\annotation\ReponseStatus.class
+com\gutosoethe\bo\PessoaBo.class
+com\gutosoethe\model\Pessoa.class
+com\gutosoethe\JAXConfiguration.class
+com\gutosoethe\connection\EntityManagerProducer.class
+com\gutosoethe\dao\PessoaDao.class
+com\gutosoethe\exception\BusinessExecption.class
+com\gutosoethe\vo\PessoaVo.class
