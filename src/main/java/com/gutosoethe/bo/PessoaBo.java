@@ -1,5 +1,6 @@
 package com.gutosoethe.bo;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -7,26 +8,27 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
-import com.gutosoethe.dao.PessoaDao;
+import com.gutosoethe.dao.PessoaJpaDao;
 import com.gutosoethe.dto.PessoaDTO;
 import com.gutosoethe.exception.BusinessExecption;
+import com.gutosoethe.generics.GenericPessoaBo;
 import com.gutosoethe.model.Pessoa;
 import com.gutosoethe.vo.PessoaVo;
 
 @ApplicationScoped
-public class PessoaBo {
+public class PessoaBo implements GenericPessoaBo {
 
     @Inject
-    private PessoaDao pessoaDao;
+    private PessoaJpaDao pessoaJpaDao;
 
     @Transactional(TxType.NOT_SUPPORTED)
     public List<PessoaVo> listarPessoas(){
-        return PessoaVo.convert(pessoaDao.findAll());
+        return PessoaVo.convert(pessoaJpaDao.findAll());
     }
 
     @Transactional(TxType.NOT_SUPPORTED)
     public PessoaVo listarById(long id){
-        return PessoaVo.convert(pessoaDao.getById(id));
+        return PessoaVo.convert(pessoaJpaDao.getById(id));
     }
 
     @Transactional(TxType.REQUIRED)
@@ -39,18 +41,18 @@ public class PessoaBo {
         pessoa.setEmail(p.getEmail());
         pessoa.setIdade(p.getIdade());
         pessoa.setPhone(p.getPhone());
-        pessoaDao.save(pessoa);
+        pessoaJpaDao.save(pessoa);
         return PessoaVo.convert(pessoa);
     }
 
     @Transactional(TxType.REQUIRED)
-    public void removerPessoa(long pessoaId){
-        pessoaDao.removeById(pessoaId);
+    public void removerPessoa(long pessoaId) throws SQLException {
+        pessoaJpaDao.removeById(pessoaId);
     }
 
     @Transactional(TxType.REQUIRED)
     public void atualizarPessoa(long id, PessoaDTO p) {
-        Pessoa pessoa = pessoaDao.getById(id);
+        Pessoa pessoa = pessoaJpaDao.getById(id);
         if (p.getNome() != null){
             pessoa.setNome(p.getNome());
         }
@@ -63,6 +65,6 @@ public class PessoaBo {
         if (p.getPhone() != null){
             pessoa.setPhone(p.getPhone());
         }
-        pessoaDao.update(pessoa);
+        pessoaJpaDao.update(pessoa);
     }
 }
