@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 
 import com.gutosoethe.annotation.ReponseStatus;
 import com.gutosoethe.bo.PessoaBo;
-import com.gutosoethe.vo.PessoaVo;
+import com.gutosoethe.dto.PessoaDTO;
 
 @Path("/pessoas")
 public class PessoaRest {
@@ -27,21 +27,21 @@ public class PessoaRest {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<PessoaVo> buscaPessoas(){
-        return pessoaBo.listarPessoas();
+    public List<PessoaDTO> buscaPessoas(){
+        return PessoaDTO.convert(pessoaBo.listarPessoas());
     }
 
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public PessoaVo buscaPessoaById(@PathParam("id") long id){
-        return pessoaBo.listarById(id);
+    public PessoaDTO buscaPessoaById(@PathParam("id") long id){
+        return PessoaDTO.convert(pessoaBo.listarById(id));
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response adicionarPessoa(@Valid PessoaVo p){
+    public Response adicionarPessoa(@Valid PessoaDTO p){
         try {
             return Response.status(Response.Status.CREATED).entity(pessoaBo.adicionarPessoa(p)).build();
         }catch (Exception e) {
@@ -57,7 +57,7 @@ public class PessoaRest {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void atualizarPessoa(@PathParam("id") long id, PessoaVo p){
+    public void atualizarPessoa(@PathParam("id") long id, PessoaDTO p){
         pessoaBo.atualizarPessoa(id, p);
     }
 

@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import com.gutosoethe.dao.PessoaDao;
+import com.gutosoethe.dto.PessoaDTO;
 import com.gutosoethe.exception.BusinessExecption;
 import com.gutosoethe.model.Pessoa;
 import com.gutosoethe.vo.PessoaVo;
@@ -29,7 +30,7 @@ public class PessoaBo {
     }
 
     @Transactional(TxType.REQUIRED)
-    public PessoaVo adicionarPessoa(PessoaVo p) {
+    public PessoaVo adicionarPessoa(PessoaDTO p) {
         if (p.getIdade() < 18){
             throw new BusinessExecption("Permitido somente para maiores de 18 anos");
         }
@@ -48,7 +49,7 @@ public class PessoaBo {
     }
 
     @Transactional(TxType.REQUIRED)
-    public void atualizarPessoa(long id, PessoaVo p) {
+    public void atualizarPessoa(long id, PessoaDTO p) {
         Pessoa pessoa = pessoaDao.getById(id);
         if (p.getNome() != null){
             pessoa.setNome(p.getNome());

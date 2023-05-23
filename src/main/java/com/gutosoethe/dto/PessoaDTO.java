@@ -53,6 +53,10 @@ public class PessoaDTO implements Serializable {
         this.phone = pessoa.getPhone();
     }
 
+    public PessoaDTO(PessoaVo pessoaVo) {
+
+    }
+
     public long getId() {
         return id;
     }
@@ -97,8 +101,8 @@ public class PessoaDTO implements Serializable {
         return pessoaList.stream().map(PessoaDTO::new).collect(Collectors.toList());
     }
 
-    public static PessoaDTO convert(Pessoa pessoa){
-        return new PessoaDTO(pessoa);
+    public static PessoaDTO convert(PessoaVo pessoaVo){
+        return new PessoaDTO(pessoaVo);
     }
 
 }

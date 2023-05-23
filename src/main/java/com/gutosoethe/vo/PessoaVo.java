@@ -4,36 +4,20 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.gutosoethe.model.Pessoa;
 
-//gerado pelo chatGPT
 public class PessoaVo implements Serializable {
 
     private static final long serialVersionUID = 0L;
 
     private long id;
 
-    @NotNull(message = "O campo nome não pode ser nulo")
-    @NotBlank(message = "O campo nome não pode estar em branco")
     private String nome;
 
-    @NotNull(message = "O campo email não pode ser nulo")
-    @NotBlank(message = "O campo email não pode estar em branco")
-    @Email
     private String email;
 
-    @NotNull(message = "O campo email não pode ser nulo")
-    @NotBlank(message = "O campo email não pode estar em branco")
     private String phone;
 
-    @NotNull(message = "O campo email não pode ser nulo")
-    @Min(0)
     private Integer idade;
 
     public PessoaVo() {
