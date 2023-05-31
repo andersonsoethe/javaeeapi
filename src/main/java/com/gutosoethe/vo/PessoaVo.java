@@ -1,14 +1,11 @@
 package com.gutosoethe.vo;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 import com.gutosoethe.model.Pessoa;
 
 public class PessoaVo implements Serializable {
-
-    private static final long serialVersionUID = 0L;
 
     private long id;
 
@@ -79,12 +76,12 @@ public class PessoaVo implements Serializable {
         this.idade = idade;
     }
 
-    public static List<PessoaVo> convert(List<Pessoa> pessoaList){
-        return pessoaList.stream().map(PessoaVo::new).collect(Collectors.toList());
-    }
-
-    public static PessoaVo convert(Pessoa pessoa){
-        return new PessoaVo(pessoa);
-    }
+//    public static List<PessoaVo> convert(List<Pessoa> pessoaList){
+//        return pessoaList.stream().map(PessoaVo::new).collect(Collectors.toList());
+//    }
+//
+//    public static PessoaVo convert(Pessoa pessoa){
+//        return new PessoaVo(pessoa);
+//    }
 
 }
