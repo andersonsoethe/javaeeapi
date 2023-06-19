@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,15 +26,19 @@ public class Pessoa implements Serializable {
 
     private Integer idade;
 
+    @ManyToOne
+    private Departamento departamento;
+
     public Pessoa() {
     }
 
-    public Pessoa(long id, String nome, String email, String phone, Integer idade) {
+    public Pessoa(long id, String nome, String email, String phone, Integer idade, Departamento departamento) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.phone = phone;
         this.idade = idade;
+        this.departamento = departamento;
     }
 
     public long getId() {
@@ -70,6 +75,14 @@ public class Pessoa implements Serializable {
 
     public void setIdade(int idade) {
         this.idade = idade;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
 
     @Override

@@ -7,7 +7,4 @@ import com.gutosoethe.model.Pessoa;
 @ApplicationScoped
 public class PessoaJpaDao extends JpaGenericsDao<Pessoa, Long> {
 
-    public PessoaJpaDao() {
-        super(Pessoa.class);
-    }
 }

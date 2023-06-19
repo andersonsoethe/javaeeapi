@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class ConversorGenerico<T, U> {
-    private Class<T> sourceClass;
-    private Class<U> targetClass;
+public class ConversorGenerico<S, T> {
+    private Class<S> sourceClass;
+    private Class<T> targetClass;
 
-    public ConversorGenerico(Class<T> sourceClass, Class<U> targetClass) {
+    public ConversorGenerico(Class<S> sourceClass, Class<T> targetClass) {
         this.sourceClass = sourceClass;
         this.targetClass = targetClass;
     }
 
-    public List<U> convert(List<T> sourceList) {
+    public List<T> convert(List<S> sourceList) {
         return sourceList.stream().map(this::convert).collect(Collectors.toList());
     }
 
-    public U convertObject(T sourceObject) {
+    public T convertSource(S sourceObject) {
         try {
-            Constructor<U> constructor = targetClass.getConstructor(sourceClass);
+            Constructor<T> constructor = targetClass.getConstructor(sourceClass);
             return constructor.newInstance(sourceObject);
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,11 +31,22 @@ public class ConversorGenerico<T, U> {
         return null;
     }
 
-
-    private U convert(T sourceObject) {
+    public S convertTarget(T targetObject) {
         try {
-            Constructor<U> constructor = targetClass.getConstructor();
-            U targetObject = constructor.newInstance();
+            return (S) targetClass.getMethod("convert").invoke(targetObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Tratar adequadamente as exceções de reflexão aqui
+        }
+
+        return null;
+    }
+
+
+    private T convert(S sourceObject) {
+        try {
+            Constructor<T> constructor = targetClass.getConstructor();
+            T targetObject = constructor.newInstance();
 
             Field[] sourceFields = sourceClass.getDeclaredFields();
             Field[] targetFields = targetClass.getDeclaredFields();

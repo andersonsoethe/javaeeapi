@@ -2,6 +2,7 @@ package com.gutosoethe.rest;
 
 import java.util.List;
 
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -15,43 +16,46 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.gutosoethe.bo.PessoaBo;
-import com.gutosoethe.dto.PessoaDTO;
+import com.gutosoethe.bo.GenericsBo;
 import com.gutosoethe.util.ConversorGenerico;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 
-public abstract class GenericsRest<T, U> implements CrudRest<T, U> {
+public abstract class GenericsRest<V, D, E, B extends GenericsBo<E, V, ID>> implements CrudRest<V, D> {
 
     @Inject
-    private PessoaBo pessoaBo;
+    private Instance<B> genericsBo;
 
-    private ConversorGenerico<T, U> conversor;
+    private ConversorGenerico<V, D> conversor;
 
-    public GenericsRest(Class<T> voClass, Class<U> dtoClass) {
+    public GenericsRest(){
+    }
+
+    public GenericsRest(Class<V> voClass, Class<D> dtoClass) {
         this.conversor = new ConversorGenerico<>(voClass, dtoClass);
     }
 
     @Override
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<U> buscar() {
-        List<T> voList = (List<T>) pessoaBo.listarPessoas();
+    public List<D> buscar() {
+        List<V> voList = genericsBo.get().buscar();
         return conversor.convert(voList);
     }
-
 
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public U buscaPorId(@PathParam("id") long id) {
-        return conversor.convertObject((T) pessoaBo.listarById(id));
+    public D buscaPorId(@PathParam("id") long id) {
+        return conversor.convertSource(genericsBo.get().buscaPorId(id));
     }
 
     @Override
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response adicionar(@Valid U entity) {
-        return Response.status(Response.Status.CREATED).entity(pessoaBo.adicionarPessoa((PessoaDTO) entity)).build();
+    public Response adicionar(@Valid D entity) {
+        V added = genericsBo.get().adicionar(conversor.convertTarget(entity));
+        return Response.status(Response.Status.CREATED).entity(added).build();
     }
 
     @Override
@@ -59,9 +63,9 @@ public abstract class GenericsRest<T, U> implements CrudRest<T, U> {
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizar(@PathParam("id") long id, U entity) {
+    public Response atualizar(@PathParam("id") long id, D entity) {
         try {
-            return Response.status(Response.Status.OK).entity(pessoaBo.atualizarPessoa(id, (PessoaDTO) entity)).build();
+            return Response.status(Response.Status.OK).entity(genericsBo.get().atualizar(id, (V) entity)).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -73,8 +77,6 @@ public abstract class GenericsRest<T, U> implements CrudRest<T, U> {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void deletar(@PathParam("id") long id) {
-        pessoaBo.removerPessoa(id);
+        genericsBo.get().deletar(id);
     }
-
-
 }

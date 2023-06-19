@@ -1,78 +1,60 @@
 package com.gutosoethe.bo;
 
-import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
 
 import com.gutosoethe.dao.PessoaJpaDao;
-import com.gutosoethe.dto.PessoaDTO;
 import com.gutosoethe.exception.BusinessExecption;
 import com.gutosoethe.model.Pessoa;
 import com.gutosoethe.util.ConversorGenerico;
 import com.gutosoethe.vo.PessoaVo;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 
-@ApplicationScoped
-public class PessoaBo {
+public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, ID> {
 
     @Inject
     private PessoaJpaDao pessoaJpaDao;
 
-    ConversorGenerico<Pessoa, PessoaVo> conversor = new ConversorGenerico<>(Pessoa.class, PessoaVo.class);
-//    List<PessoaVo> pessoaVoList = // sua lista de PessoaVo
-//    List<Pessoa> pessoaList = conversor.convert(pessoaVoList);
+    private ConversorGenerico<Pessoa, PessoaVo> conversor;
 
-    @Transactional(TxType.NOT_SUPPORTED)
-//    public List<PessoaVo> listarPessoas(){
-//        return PessoaVo.convert(pessoaJpaDao.findAll());
-//    }
-    public List<PessoaVo> listarPessoas(){
-        List<Pessoa> pessoaList = pessoaJpaDao.findAll();
-        return conversor.convert(pessoaList);
-    }
-
-    @Transactional(TxType.NOT_SUPPORTED)
-    public PessoaVo listarById(long id){
-        return conversor.convertObject(pessoaJpaDao.findById(id));
-    }
-
-    @Transactional(TxType.REQUIRED)
-    public PessoaVo adicionarPessoa(PessoaDTO p) {
-        if (p.getIdade() < 18){
+    @Override
+    public PessoaVo adicionar(PessoaVo entity) {
+        if (entity.getIdade() < 18){
             throw new BusinessExecption("A idade deve ter mais de 18 anos");
         }
         Pessoa pessoa = new Pessoa();
-        pessoa.setNome(p.getNome());
-        pessoa.setEmail(p.getEmail());
-        pessoa.setIdade(p.getIdade());
-        pessoa.setPhone(p.getPhone());
+        pessoa.setNome(entity.getNome());
+        pessoa.setEmail(entity.getEmail());
+        pessoa.setIdade(entity.getIdade());
+        pessoa.setPhone(entity.getPhone());
+//        long id = (entity.getDepartamento().getId());
+//        if (buscar(entity.getDepartamento().getId()).isEmpty()){
+//
+//        }
+        pessoa.setDepartamento(entity.getDepartamento());
         pessoaJpaDao.save(pessoa);
-        return conversor.convertObject(pessoa);
+        return conversor.convertSource(pessoa) ;
     }
 
-    @Transactional(TxType.REQUIRED)
-    public void removerPessoa(long pessoaId) {
-        pessoaJpaDao.delete(pessoaId);
-    }
-
-    @Transactional(TxType.REQUIRED)
-    public PessoaVo atualizarPessoa(long id, PessoaDTO p) {
+    @Override
+    public PessoaVo atualizar(long id, PessoaVo entity) {
         Pessoa pessoa = pessoaJpaDao.findById(id);
-        if (p.getNome() != null){
-            pessoa.setNome(p.getNome());
+        if (entity.getNome() != null){
+            pessoa.setNome(entity.getNome());
         }
-        if (p.getEmail() != null){
-            pessoa.setEmail(p.getEmail());
+        if (entity.getEmail() != null){
+            pessoa.setEmail(entity.getEmail());
         }
-        if (p.getIdade() != null){
-            pessoa.setIdade(p.getIdade());
+        if (entity.getIdade() != null){
+            pessoa.setIdade(entity.getIdade());
         }
-        if (p.getPhone() != null){
-            pessoa.setPhone(p.getPhone());
+        if (entity.getPhone() != null){
+            pessoa.setPhone(entity.getPhone());
+        }
+        if (entity.getDepartamento() !=null){
+            pessoa.setDepartamento(entity.getDepartamento());
         }
         pessoaJpaDao.update(pessoa);
-        return conversor.convertObject(pessoa);
+        return conversor.convertSource(pessoa);
     }
 }

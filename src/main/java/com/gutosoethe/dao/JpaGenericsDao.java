@@ -1,51 +1,55 @@
 package com.gutosoethe.dao;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
-public abstract class JpaGenericsDao<T, ID extends Serializable> implements CrudDao<T, ID> {
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
-    private final Class<T> persistentClass;
+public abstract class JpaGenericsDao<P, ID extends Serializable> implements CrudDao<P, ID> {
+
+    private final Class<P> persistentClass;
 
     @Inject
     private EntityManager entityManager;
 
-    public JpaGenericsDao(Class<T> persistentClass){
-        this.persistentClass = persistentClass;
+    public JpaGenericsDao(){
+        Type[] types =((ParameterizedTypeImpl) ((Class) getClass().getGenericSuperclass()).getGenericSuperclass()).getActualTypeArguments();
+        this.persistentClass = (Class<P>)  types[0];
     }
 
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
-    public void save(T entity) {
+    public void save(P entity) {
          entityManager.persist(entity);
     }
 
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
-    public void update(T entity) {
+    public void update(P entity) {
         entityManager.merge(entity);
     }
 
     @Override
     @Transactional(Transactional.TxType.REQUIRED)
     public void delete(ID id) {
-        T entity = findById(id);
+        P entity = findById(id);
         entityManager.remove(entity);
     }
 
     @Override
     @Transactional(Transactional.TxType.NOT_SUPPORTED)
-    public T findById(ID id) {
+    public P findById(ID id) {
         return entityManager.find(persistentClass, id);
     }
 
     @Override
     @Transactional(Transactional.TxType.NOT_SUPPORTED)
-    public List<T> findAll() {
+    public List<P> findAll() {
         return entityManager.createQuery("Select t From "+
                 persistentClass.getSimpleName() + " t").getResultList();
     }

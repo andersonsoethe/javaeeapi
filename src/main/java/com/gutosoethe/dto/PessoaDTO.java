@@ -1,5 +1,6 @@
 package com.gutosoethe.dto;
 
+import com.gutosoethe.model.Departamento;
 import com.gutosoethe.vo.PessoaVo;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -33,15 +34,19 @@ public class PessoaDTO implements Serializable {
     @Min(0)
     private Integer idade;
 
+    @NotNull(message = "O campo email não pode ser nulo")
+    private Departamento departamento;
+
     public PessoaDTO() {
     }
 
-    public PessoaDTO(long id, String nome, String email, String phone, Integer idade) {
+    public PessoaDTO(long id, String nome, String email, String phone, Integer idade, Departamento departamento) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.phone = phone;
         this.idade = idade;
+        this.departamento = departamento;
     }
 
     public PessoaDTO(PessoaVo pessoa) {
@@ -50,6 +55,7 @@ public class PessoaDTO implements Serializable {
         this.email = pessoa.getEmail();
         this.idade = pessoa.getIdade();
         this.phone = pessoa.getPhone();
+        this.departamento = pessoa.getDepartamento();
     }
 
     public long getId() {
@@ -90,6 +96,14 @@ public class PessoaDTO implements Serializable {
 
     public void setIdade(int idade) {
         this.idade = idade;
+    }
+
+    public Departamento getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(Departamento departamento) {
+        this.departamento = departamento;
     }
 
     public static List<PessoaDTO> convert(List<PessoaVo> pessoaList){
