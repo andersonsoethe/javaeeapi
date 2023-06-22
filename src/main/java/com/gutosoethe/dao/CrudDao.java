@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface CrudDao<T, ID extends Serializable> {
+public interface CrudDao<P, ID extends Serializable> {
 
-    void save(T entity) throws SQLException;
-    void update(T entity) throws SQLException;
+    void save(P entity) throws SQLException;
+    void update(P entity) throws SQLException;
     void delete(ID id) throws SQLException;
-    T findById(ID id);
-    List<T> findAll();
+    P findById(ID id);
+    List<P> findAll();
 }

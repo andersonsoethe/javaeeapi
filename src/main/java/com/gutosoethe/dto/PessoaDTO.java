@@ -1,6 +1,7 @@
 package com.gutosoethe.dto;
 
-import com.gutosoethe.model.Departamento;
+import com.gutosoethe.util.ConversorGenerico;
+import com.gutosoethe.vo.DepartamentoVo;
 import com.gutosoethe.vo.PessoaVo;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -12,6 +13,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PessoaDTO implements Serializable {
+
+    private static final ConversorGenerico<DepartamentoVo, DepartamentoDTO> departamentoConverted =
+            new ConversorGenerico<>(DepartamentoVo.class, DepartamentoDTO.class);
 
     private static final long serialVersionUID = 0L;
 
@@ -35,12 +39,12 @@ public class PessoaDTO implements Serializable {
     private Integer idade;
 
     @NotNull(message = "O campo email não pode ser nulo")
-    private Departamento departamento;
+    private DepartamentoDTO departamento;
 
     public PessoaDTO() {
     }
 
-    public PessoaDTO(long id, String nome, String email, String phone, Integer idade, Departamento departamento) {
+    public PessoaDTO(long id, String nome, String email, String phone, Integer idade, DepartamentoDTO departamento) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -55,7 +59,7 @@ public class PessoaDTO implements Serializable {
         this.email = pessoa.getEmail();
         this.idade = pessoa.getIdade();
         this.phone = pessoa.getPhone();
-        this.departamento = pessoa.getDepartamento();
+        this.departamento = departamentoConverted.convertSource(pessoa.getDepartamento());
     }
 
     public long getId() {
@@ -98,11 +102,11 @@ public class PessoaDTO implements Serializable {
         this.idade = idade;
     }
 
-    public Departamento getDepartamento() {
+    public DepartamentoDTO getDepartamento() {
         return departamento;
     }
 
-    public void setDepartamento(Departamento departamento) {
+    public void setDepartamento(DepartamentoDTO departamento) {
         this.departamento = departamento;
     }
 
@@ -113,5 +117,11 @@ public class PessoaDTO implements Serializable {
     public static PessoaDTO convert(PessoaVo pessoaVo){
         return new PessoaDTO(pessoaVo);
     }
+
+    public PessoaVo convert(){
+        DepartamentoVo vo = departamentoConverted.convertTarget(departamento);
+        return new PessoaVo(id, nome, email, phone, idade, vo);
+    }
+
 
 }

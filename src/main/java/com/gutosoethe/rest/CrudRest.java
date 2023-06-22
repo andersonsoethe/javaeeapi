@@ -6,16 +6,16 @@ import javax.validation.Valid;
 
 import javax.ws.rs.core.Response;
 
-public interface CrudRest<T, U> {
+public interface CrudRest<V, D, ID> {
 
-    Response adicionar(@Valid U entity);
+    Response adicionar(@Valid D dto);
 
-    Response atualizar(long id, U entity);
+    Response atualizar(ID id, D dto);
 
-    void deletar(long id);
+    void deletar(ID id);
 
-    U buscaPorId(long id);
+    D buscaPorId(ID id);
 
-    List<U> buscar();
+    List<D> buscar();
 
 }

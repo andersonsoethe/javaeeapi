@@ -7,9 +7,8 @@ import com.gutosoethe.dto.PessoaDTO;
 import com.gutosoethe.model.Pessoa;
 import com.gutosoethe.vo.PessoaVo;
 
-
 @Path("/pessoas")
-public class PessoaRest extends GenericsRest<PessoaVo, PessoaDTO, Pessoa, PessoaBo> {
+public class PessoaRest extends GenericsRest<PessoaVo, PessoaDTO, Pessoa, Long, PessoaBo> {
 
     public PessoaRest() {
         super(PessoaVo.class, PessoaDTO.class);

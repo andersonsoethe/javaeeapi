@@ -1,5 +1,6 @@
 package com.gutosoethe.rest;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.inject.Instance;
@@ -18,14 +19,13 @@ import javax.ws.rs.core.Response;
 
 import com.gutosoethe.bo.GenericsBo;
 import com.gutosoethe.util.ConversorGenerico;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 
-public abstract class GenericsRest<V, D, E, B extends GenericsBo<E, V, ID>> implements CrudRest<V, D> {
+public abstract class GenericsRest<V, D, E, ID extends Serializable, B extends GenericsBo<E, V, ID>> implements CrudRest<V, D, ID> {
 
     @Inject
     private Instance<B> genericsBo;
 
-    private ConversorGenerico<V, D> conversor;
+    protected ConversorGenerico<V, D> conversor;
 
     public GenericsRest(){
     }
@@ -45,7 +45,7 @@ public abstract class GenericsRest<V, D, E, B extends GenericsBo<E, V, ID>> impl
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public D buscaPorId(@PathParam("id") long id) {
+    public D buscaPorId(@PathParam("id") ID id) {
         return conversor.convertSource(genericsBo.get().buscaPorId(id));
     }
 
@@ -53,8 +53,9 @@ public abstract class GenericsRest<V, D, E, B extends GenericsBo<E, V, ID>> impl
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response adicionar(@Valid D entity) {
-        V added = genericsBo.get().adicionar(conversor.convertTarget(entity));
+    public Response adicionar(@Valid D dto) {
+        V vo = conversor.convertTarget(dto);
+        V added = genericsBo.get().adicionar(vo);
         return Response.status(Response.Status.CREATED).entity(added).build();
     }
 
@@ -63,9 +64,11 @@ public abstract class GenericsRest<V, D, E, B extends GenericsBo<E, V, ID>> impl
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizar(@PathParam("id") long id, D entity) {
+    public Response atualizar(@PathParam("id") ID id, D dto) {
         try {
-            return Response.status(Response.Status.OK).entity(genericsBo.get().atualizar(id, (V) entity)).build();
+            V vo = conversor.convertTarget(dto);
+            V updated = genericsBo.get().atualizar(id, vo);
+            return Response.status(Response.Status.OK).entity(updated).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -76,7 +79,7 @@ public abstract class GenericsRest<V, D, E, B extends GenericsBo<E, V, ID>> impl
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void deletar(@PathParam("id") long id) {
+    public void deletar(@PathParam("id") ID id) {
         genericsBo.get().deletar(id);
     }
 }

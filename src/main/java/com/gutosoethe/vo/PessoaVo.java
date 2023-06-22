@@ -2,8 +2,6 @@ package com.gutosoethe.vo;
 
 import java.io.Serializable;
 
-
-import com.gutosoethe.model.Departamento;
 import com.gutosoethe.model.Pessoa;
 
 public class PessoaVo implements Serializable {
@@ -18,12 +16,12 @@ public class PessoaVo implements Serializable {
 
     private Integer idade;
 
-    private Departamento departamento;
+    private DepartamentoVo departamento;
 
     public PessoaVo() {
     }
 
-    public PessoaVo(long id, String nome, String email, String phone, Integer idade, Departamento departamento) {
+    public PessoaVo(long id, String nome, String email, String phone, Integer idade, DepartamentoVo departamento) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -38,7 +36,7 @@ public class PessoaVo implements Serializable {
         this.email = pessoa.getEmail();
         this.idade = pessoa.getIdade();
         this.phone = pessoa.getPhone();
-        this.departamento = pessoa.getDepartamento();
+        this.departamento = new DepartamentoVo(pessoa.getDepartamento());
     }
 
     public long getId() {
@@ -81,11 +79,11 @@ public class PessoaVo implements Serializable {
         this.idade = idade;
     }
 
-    public Departamento getDepartamento() {
+    public DepartamentoVo getDepartamento() {
         return departamento;
     }
 
-    public void setDepartamento(Departamento departamento) {
+    public void setDepartamento(DepartamentoVo departamento) {
         this.departamento = departamento;
     }
 }

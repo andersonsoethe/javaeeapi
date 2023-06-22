@@ -8,7 +8,7 @@ import com.gutosoethe.model.Departamento;
 import com.gutosoethe.vo.DepartamentoVo;
 
 @Path("/departamentos")
-public class DepartamentoRest extends GenericsRest<DepartamentoVo, DepartamentoDTO, Departamento, DepartamentoBo>{
+public class DepartamentoRest extends GenericsRest<DepartamentoVo, DepartamentoDTO, Departamento, Long, DepartamentoBo>{
 
     public DepartamentoRest() {
         super(DepartamentoVo.class, DepartamentoDTO.class);

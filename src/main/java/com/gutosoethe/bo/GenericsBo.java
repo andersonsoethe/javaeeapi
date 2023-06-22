@@ -13,12 +13,12 @@ import com.gutosoethe.util.ConversorGenerico;
 
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
-public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudBo<E, V> {
+public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudBo<E, V, ID> {
 
     @Inject
     protected JpaGenericsDao<E, ID> jpaGenericsDao;
 
-    private ConversorGenerico<E, V> conversor;
+    protected ConversorGenerico<E, V> conversor;
 
     public GenericsBo(){
         Type[] types =((ParameterizedTypeImpl) ((Class) getClass().getGenericSuperclass()).getGenericSuperclass()).getActualTypeArguments();
@@ -30,13 +30,13 @@ public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudB
     @Override
     @Transactional(TxType.NOT_SUPPORTED)
     public List<V> buscar(){
-        List<E> entityList = (List<E>) jpaGenericsDao.findAll();
+        List<E> entityList = jpaGenericsDao.findAll();
         return conversor.convert(entityList);
     }
 
     @Override
     @Transactional(TxType.NOT_SUPPORTED)
-    public V buscaPorId(long id){
+    public V buscaPorId(ID id){
         return conversor.convertSource(jpaGenericsDao.findById(id));
     }
 
@@ -48,7 +48,7 @@ public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudB
     }
 
     @Transactional(TxType.REQUIRED)
-    public void deletar(Serializable id) {
+    public void deletar(ID id) {
         jpaGenericsDao.delete(id);
     }
 

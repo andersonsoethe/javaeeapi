@@ -1,21 +1,16 @@
 package com.gutosoethe.bo;
 
-
 import javax.inject.Inject;
 
 import com.gutosoethe.dao.PessoaJpaDao;
 import com.gutosoethe.exception.BusinessExecption;
 import com.gutosoethe.model.Pessoa;
-import com.gutosoethe.util.ConversorGenerico;
 import com.gutosoethe.vo.PessoaVo;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 
-public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, ID> {
+public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, Long> {
 
     @Inject
     private PessoaJpaDao pessoaJpaDao;
-
-    private ConversorGenerico<Pessoa, PessoaVo> conversor;
 
     @Override
     public PessoaVo adicionar(PessoaVo entity) {
@@ -31,13 +26,13 @@ public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, ID> {
 //        if (buscar(entity.getDepartamento().getId()).isEmpty()){
 //
 //        }
-        pessoa.setDepartamento(entity.getDepartamento());
+        pessoa.setDepartamento(entity.getDepartamento().convert());
         pessoaJpaDao.save(pessoa);
         return conversor.convertSource(pessoa) ;
     }
 
     @Override
-    public PessoaVo atualizar(long id, PessoaVo entity) {
+    public PessoaVo atualizar(Long id, PessoaVo entity) {
         Pessoa pessoa = pessoaJpaDao.findById(id);
         if (entity.getNome() != null){
             pessoa.setNome(entity.getNome());
@@ -52,7 +47,7 @@ public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, ID> {
             pessoa.setPhone(entity.getPhone());
         }
         if (entity.getDepartamento() !=null){
-            pessoa.setDepartamento(entity.getDepartamento());
+            pessoa.setDepartamento(entity.getDepartamento().convert());
         }
         pessoaJpaDao.update(pessoa);
         return conversor.convertSource(pessoa);
