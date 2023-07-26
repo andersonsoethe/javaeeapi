@@ -3,6 +3,7 @@ package com.gutosoethe.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ public class Pessoa implements Serializable {
 
     private Integer idade;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER,targetEntity = Departamento.class)
     private Departamento departamento;
 
     public Pessoa() {

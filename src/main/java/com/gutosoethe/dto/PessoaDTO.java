@@ -122,6 +122,4 @@ public class PessoaDTO implements Serializable {
         DepartamentoVo vo = departamentoConverted.convertTarget(departamento);
         return new PessoaVo(id, nome, email, phone, idade, vo);
     }
-
-
 }

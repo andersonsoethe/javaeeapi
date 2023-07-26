@@ -13,6 +13,10 @@ public class DepartamentoVo implements Serializable {
 
     private String descricao;
 
+    public DepartamentoVo(){
+
+    }
+
     public DepartamentoVo(long id, String nome, String desc) {
         this.id = id;
         this.nome = nome;
