@@ -1,6 +1,5 @@
 package com.gutosoethe.dto;
 
-import com.gutosoethe.util.ConversorGenerico;
 import com.gutosoethe.vo.DepartamentoVo;
 import com.gutosoethe.vo.PessoaVo;
 import org.hibernate.validator.constraints.Email;
@@ -13,9 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PessoaDTO implements Serializable {
-
-    private static final ConversorGenerico<DepartamentoVo, DepartamentoDTO> departamentoConverted =
-            new ConversorGenerico<>(DepartamentoVo.class, DepartamentoDTO.class);
 
     private static final long serialVersionUID = 0L;
 
@@ -59,7 +55,7 @@ public class PessoaDTO implements Serializable {
         this.email = pessoa.getEmail();
         this.idade = pessoa.getIdade();
         this.phone = pessoa.getPhone();
-        this.departamento = departamentoConverted.convertSource(pessoa.getDepartamento());
+        this.departamento = new DepartamentoDTO(pessoa.getDepartamento());
     }
 
     public long getId() {
@@ -119,7 +115,7 @@ public class PessoaDTO implements Serializable {
     }
 
     public PessoaVo convert(){
-        DepartamentoVo vo = departamentoConverted.convertTarget(departamento);
+        DepartamentoVo vo = departamento.convert();
         return new PessoaVo(id, nome, email, phone, idade, vo);
     }
 }

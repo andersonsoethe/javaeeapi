@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface CrudBo<E, V, ID extends Serializable> {
 
-    V adicionar(V entity);
+    void adicionar(V entity);
 
     V atualizar(ID id, V entity);
 

@@ -42,9 +42,8 @@ public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudB
 
     @Override
     @Transactional(TxType.REQUIRED)
-    public V adicionar(V entity) {
+    public void adicionar(V entity) {
         jpaGenericsDao.save(conversor.convertTarget(entity));
-        return conversor.convertSource((E) entity);
     }
 
     @Transactional(TxType.REQUIRED)
@@ -55,6 +54,25 @@ public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudB
     @Override
     @Transactional(TxType.REQUIRED)
     public V atualizar(ID id, V entity) {
+//        E entityToupdate = jpaGenericsDao.findById(id);
+//
+//        Field[] fields = entityToupdate.getClass().getDeclaredFields();
+//        for (Field field : fields){
+//            field.setAccessible(true);
+//            try {
+//                Field fielToUpdate = entity.getClass().getDeclaredField(field.getName());
+//                fielToUpdate.setAccessible(true);
+//                Object fieldValue = fielToUpdate.get(entity);
+//
+//               if (fieldValue != null) {
+//                   field.set(entityToupdate, fieldValue);
+//               }
+//            } catch (IllegalAccessException | NoSuchFieldException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        jpaGenericsDao.update(conversor.convertTarget(entity));
+//        return conversor.convertSource((E) entity);
         jpaGenericsDao.update(conversor.convertTarget(entity));
         return conversor.convertSource((E) entity);
     }

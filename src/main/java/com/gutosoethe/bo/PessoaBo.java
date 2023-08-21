@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import com.gutosoethe.dao.PessoaJpaDao;
 import com.gutosoethe.exception.BusinessExecption;
+import com.gutosoethe.model.Departamento;
 import com.gutosoethe.model.Pessoa;
 import com.gutosoethe.vo.PessoaVo;
 
@@ -13,7 +14,7 @@ public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, Long> {
     private PessoaJpaDao pessoaJpaDao;
 
     @Override
-    public PessoaVo adicionar(PessoaVo entity) {
+    public void adicionar(PessoaVo entity) {
         if (entity.getIdade() < 18){
             throw new BusinessExecption("A idade deve ter mais de 18 anos");
         }
@@ -26,9 +27,9 @@ public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, Long> {
 //        if (buscar(entity.getDepartamento().getId()).isEmpty()){
 //
 //        }
-        pessoa.setDepartamento(entity.getDepartamento().convert());
+        Departamento departamento = entity.getDepartamento().convert();
+        pessoa.setDepartamento(departamento);
         pessoaJpaDao.save(pessoa);
-        return conversor.convertSource(pessoa) ;
     }
 
     @Override

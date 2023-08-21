@@ -6,12 +6,11 @@ import com.gutosoethe.vo.DepartamentoVo;
 public class DepartamentoBo extends GenericsBo<Departamento, DepartamentoVo, Long>{
 
     @Override
-    public DepartamentoVo adicionar(DepartamentoVo entity) {
+    public void adicionar(DepartamentoVo entity) {
         Departamento departamento = new Departamento();
         departamento.setNome(entity.getNome());
         departamento.setDescricao(entity.getDescricao());
         jpaGenericsDao.save(departamento);
-        return conversor.convertSource(departamento);
     }
 
     @Override

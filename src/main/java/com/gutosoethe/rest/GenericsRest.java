@@ -55,8 +55,8 @@ public abstract class GenericsRest<V, D, E, ID extends Serializable, B extends G
     @Produces(MediaType.APPLICATION_JSON)
     public Response adicionar(@Valid D dto) {
         V vo = conversor.convertTarget(dto);
-        V added = genericsBo.get().adicionar(vo);
-        return Response.status(Response.Status.CREATED).entity(added).build();
+        genericsBo.get().adicionar(vo);
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @Override
@@ -65,13 +65,9 @@ public abstract class GenericsRest<V, D, E, ID extends Serializable, B extends G
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response atualizar(@PathParam("id") ID id, D dto) {
-        try {
             V vo = conversor.convertTarget(dto);
-            V updated = genericsBo.get().atualizar(id, vo);
-            return Response.status(Response.Status.OK).entity(updated).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
+            genericsBo.get().atualizar(id, vo);
+            return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @Override
