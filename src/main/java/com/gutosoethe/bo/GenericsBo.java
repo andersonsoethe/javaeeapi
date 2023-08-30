@@ -1,18 +1,18 @@
 package com.gutosoethe.bo;
 
+import com.gutosoethe.dao.JpaGenericsDao;
+import com.gutosoethe.util.ConversorGenerico;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
-
-import com.gutosoethe.dao.JpaGenericsDao;
-import com.gutosoethe.util.ConversorGenerico;
-
-import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
-
+@Named
 public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudBo<E, V, ID> {
 
     @Inject
@@ -54,25 +54,6 @@ public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudB
     @Override
     @Transactional(TxType.REQUIRED)
     public V atualizar(ID id, V entity) {
-//        E entityToupdate = jpaGenericsDao.findById(id);
-//
-//        Field[] fields = entityToupdate.getClass().getDeclaredFields();
-//        for (Field field : fields){
-//            field.setAccessible(true);
-//            try {
-//                Field fielToUpdate = entity.getClass().getDeclaredField(field.getName());
-//                fielToUpdate.setAccessible(true);
-//                Object fieldValue = fielToUpdate.get(entity);
-//
-//               if (fieldValue != null) {
-//                   field.set(entityToupdate, fieldValue);
-//               }
-//            } catch (IllegalAccessException | NoSuchFieldException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        jpaGenericsDao.update(conversor.convertTarget(entity));
-//        return conversor.convertSource((E) entity);
         jpaGenericsDao.update(conversor.convertTarget(entity));
         return conversor.convertSource((E) entity);
     }
