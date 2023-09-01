@@ -1,17 +1,18 @@
 package com.gutosoethe.bo;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import com.gutosoethe.dao.JpaGenericsDao;
 import com.gutosoethe.dao.PessoaJpaDao;
 import com.gutosoethe.exception.BusinessExecption;
 import com.gutosoethe.model.Departamento;
 import com.gutosoethe.model.Pessoa;
 import com.gutosoethe.vo.PessoaVo;
 
-public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, Long> {
+@ApplicationScoped
+public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, Long, PessoaJpaDao> {
 
-    @Inject
-    private PessoaJpaDao pessoaJpaDao;
 
     @Override
     public void adicionar(PessoaVo entity) {
@@ -29,12 +30,12 @@ public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, Long> {
 //        }
         Departamento departamento = entity.getDepartamento().convert();
         pessoa.setDepartamento(departamento);
-        pessoaJpaDao.save(pessoa);
+        jpaGenericsDao.get().save(pessoa);
     }
 
     @Override
     public PessoaVo atualizar(Long id, PessoaVo entity) {
-        Pessoa pessoa = pessoaJpaDao.findById(id);
+        Pessoa pessoa = jpaGenericsDao.get().findById(id);
         if (entity.getNome() != null){
             pessoa.setNome(entity.getNome());
         }
@@ -50,7 +51,7 @@ public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, Long> {
         if (entity.getDepartamento() !=null){
             pessoa.setDepartamento(entity.getDepartamento().convert());
         }
-        pessoaJpaDao.update(pessoa);
+        jpaGenericsDao.get().update(pessoa);
         return conversor.convertSource(pessoa);
     }
 }

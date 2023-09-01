@@ -18,9 +18,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.gutosoethe.bo.GenericsBo;
+import com.gutosoethe.dao.JpaGenericsDao;
 import com.gutosoethe.util.ConversorGenerico;
 
-public abstract class GenericsRest<V, D, E, ID extends Serializable, B extends GenericsBo<E, V, ID>> implements CrudRest<V, D, ID> {
+public abstract class GenericsRest<V, D, E, ID extends Serializable, DAO extends JpaGenericsDao<E, ID>,
+        B extends GenericsBo<E, V, ID, DAO>>
+        implements CrudRest<V, D, ID> {
 
     @Inject
     private Instance<B> genericsBo;

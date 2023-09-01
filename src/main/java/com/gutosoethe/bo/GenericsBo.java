@@ -4,19 +4,19 @@ import com.gutosoethe.dao.JpaGenericsDao;
 import com.gutosoethe.util.ConversorGenerico;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.List;
 
-@Named
-public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudBo<E, V, ID> {
+public abstract class GenericsBo<E, V, ID extends Serializable, D extends JpaGenericsDao<E, ID>>
+        implements CrudBo<E, V, ID> {
 
     @Inject
-    protected JpaGenericsDao<E, ID> jpaGenericsDao;
+    protected Instance<D> jpaGenericsDao;
 
     protected ConversorGenerico<E, V> conversor;
 
@@ -30,31 +30,31 @@ public abstract class GenericsBo<E, V, ID extends Serializable> implements CrudB
     @Override
     @Transactional(TxType.NOT_SUPPORTED)
     public List<V> buscar(){
-        List<E> entityList = jpaGenericsDao.findAll();
+        List<E> entityList = jpaGenericsDao.get().findAll();
         return conversor.convert(entityList);
     }
 
     @Override
     @Transactional(TxType.NOT_SUPPORTED)
     public V buscaPorId(ID id){
-        return conversor.convertSource(jpaGenericsDao.findById(id));
+        return conversor.convertSource(jpaGenericsDao.get().findById(id));
     }
 
     @Override
     @Transactional(TxType.REQUIRED)
     public void adicionar(V entity) {
-        jpaGenericsDao.save(conversor.convertTarget(entity));
+        jpaGenericsDao.get().save(conversor.convertTarget(entity));
     }
 
     @Transactional(TxType.REQUIRED)
     public void deletar(ID id) {
-        jpaGenericsDao.delete(id);
+        jpaGenericsDao.get().delete(id);
     }
 
     @Override
     @Transactional(TxType.REQUIRED)
     public V atualizar(ID id, V entity) {
-        jpaGenericsDao.update(conversor.convertTarget(entity));
+        jpaGenericsDao.get().update(conversor.convertTarget(entity));
         return conversor.convertSource((E) entity);
     }
 }
