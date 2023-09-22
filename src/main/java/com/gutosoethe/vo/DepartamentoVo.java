@@ -4,18 +4,13 @@ import java.io.Serializable;
 
 import com.gutosoethe.model.Departamento;
 
-
 public class DepartamentoVo implements Serializable {
 
     private long id;
-
     private String nome;
-
     private String descricao;
 
-    public DepartamentoVo(){
-
-    }
+    public DepartamentoVo(){}
 
     public DepartamentoVo(long id, String nome, String desc) {
         this.id = id;

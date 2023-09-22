@@ -13,7 +13,6 @@ import com.gutosoethe.vo.PessoaVo;
 @ApplicationScoped
 public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, Long, PessoaJpaDao> {
 
-
     @Override
     public void adicionar(PessoaVo entity) {
         if (entity.getIdade() < 18){
@@ -24,10 +23,6 @@ public class PessoaBo extends GenericsBo<Pessoa, PessoaVo, Long, PessoaJpaDao> {
         pessoa.setEmail(entity.getEmail());
         pessoa.setIdade(entity.getIdade());
         pessoa.setPhone(entity.getPhone());
-//        long id = (entity.getDepartamento().getId());
-//        if (buscar(entity.getDepartamento().getId()).isEmpty()){
-//
-//        }
         Departamento departamento = entity.getDepartamento().convert();
         pessoa.setDepartamento(departamento);
         jpaGenericsDao.get().save(pessoa);
