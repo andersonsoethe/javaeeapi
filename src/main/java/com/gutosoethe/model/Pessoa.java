@@ -18,13 +18,9 @@ public class Pessoa implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String nome;
-
     private String email;
-
     private String phone;
-
     private Integer idade;
 
     @ManyToOne(fetch = FetchType.EAGER,targetEntity = Departamento.class)

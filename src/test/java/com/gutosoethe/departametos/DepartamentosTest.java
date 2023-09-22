@@ -1,38 +1,36 @@
 package com.gutosoethe.departametos;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import com.gutosoethe.model.Departamento;
+import io.restassured.RestAssured;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
-import com.gutosoethe.model.Departamento;
-
-import io.restassured.RestAssured;
 
 @RunWith(Arquillian.class)
 public class DepartamentosTest {
+
     @PersistenceContext(unitName = "test")
     private EntityManager entityManager;
-
     @Deployment
     public static JavaArchive createDeployment() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClass(Departamento.class)
-                .addAsManifestResource("jbossas-ds.xml", "WEB-INF/jbossas-ds.xml")
-                .addAsManifestResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 

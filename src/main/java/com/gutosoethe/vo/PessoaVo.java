@@ -7,13 +7,9 @@ import com.gutosoethe.model.Pessoa;
 public class PessoaVo implements Serializable {
 
     private long id;
-
     private String nome;
-
     private String email;
-
     private String phone;
-
     private Integer idade;
 
     private DepartamentoVo departamento;

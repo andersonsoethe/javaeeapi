@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ConversorGenerico<S, T> {
+
     private Class<S> sourceClass;
     private Class<T> targetClass;
 
@@ -23,7 +24,6 @@ public class ConversorGenerico<S, T> {
             return constructor.newInstance(sourceObject);
         } catch (Exception e) {
             e.printStackTrace();
-            // Tratar adequadamente as exceções de reflexão aqui
         }
 
         return null;
@@ -34,12 +34,10 @@ public class ConversorGenerico<S, T> {
             return (S) targetClass.getMethod("convert").invoke(targetObject);
         } catch (Exception e) {
             e.printStackTrace();
-            // Tratar adequadamente as exceções de reflexão aqui
         }
 
         return null;
     }
-
 
     private T convert(S sourceObject) {
         try {
@@ -48,7 +46,6 @@ public class ConversorGenerico<S, T> {
             return targetObject;
         } catch (Exception e) {
             e.printStackTrace();
-            // Tratar adequadamente as exceções de reflexão aqui
         }
 
         return null;
