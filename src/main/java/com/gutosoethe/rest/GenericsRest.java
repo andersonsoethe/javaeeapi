@@ -21,7 +21,7 @@ import com.gutosoethe.bo.GenericsBo;
 import com.gutosoethe.dao.JpaGenericsDao;
 import com.gutosoethe.util.ConversorGenerico;
 
-public abstract class GenericsRest<V, D, E, ID extends Serializable, DAO extends JpaGenericsDao<E, ID>,
+public abstract class  GenericsRest<V, D, E, ID extends Serializable, DAO extends JpaGenericsDao<E, ID>,
         B extends GenericsBo<E, V, ID, DAO>>
         implements CrudRest<V, D, ID> {
 
