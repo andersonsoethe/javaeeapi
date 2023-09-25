@@ -7,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "produtos")
 public class Produto implements Serializable {
-
+    private static final long serialVersionUID = -5272017365235968499L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -58,11 +58,11 @@ public class Produto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Produto produto = (Produto) o;
-        return id == produto.id && Objects.equals(nome, produto.nome) && Objects.equals(descricao, produto.descricao) && Objects.equals(valor, produto.valor);
+        return id == produto.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, descricao, valor);
+        return (int) (id ^ (id >>> 32));
     }
 }

@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 
 public class ProdutoDTO {
 
-
-
     private long id;
 
     @NotNull(message = "O campo nome não pode ser nulo")
@@ -79,5 +77,9 @@ public class ProdutoDTO {
 
     public static ProdutoDTO convert(ProdutoVo produtoVo){
         return new ProdutoDTO(produtoVo);
+    }
+
+    public ProdutoVo convert(){
+        return new ProdutoVo(id, nome, descricao, valor);
     }
 }

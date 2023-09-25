@@ -10,7 +10,6 @@ import javax.ws.rs.Path;
 
 @Path("/produtos")
 public class ProdutoRest extends GenericsRest<ProdutoVo, ProdutoDTO, Produto, Long, ProdutoJpaDao, ProdutoBo> {
-
     public ProdutoRest() {
         super(ProdutoVo.class, ProdutoDTO.class);
     }
