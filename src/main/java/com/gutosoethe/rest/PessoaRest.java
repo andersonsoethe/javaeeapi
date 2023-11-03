@@ -14,5 +14,4 @@ public class PessoaRest extends GenericsRest<PessoaVo, PessoaDTO, Pessoa, Long, 
     public PessoaRest() {
         super(PessoaVo.class, PessoaDTO.class);
     }
-
 }

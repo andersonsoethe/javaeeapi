@@ -1,11 +1,8 @@
 package com.gutosoethe.dto;
 
-import com.gutosoethe.vo.DepartamentoVo;
-import com.gutosoethe.vo.PessoaVo;
 import com.gutosoethe.vo.ProdutoVo;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
