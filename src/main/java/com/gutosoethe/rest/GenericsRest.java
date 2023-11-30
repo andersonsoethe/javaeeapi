@@ -3,6 +3,7 @@ package com.gutosoethe.rest;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -21,6 +22,7 @@ import com.gutosoethe.bo.GenericsBo;
 import com.gutosoethe.dao.JpaGenericsDao;
 import com.gutosoethe.util.ConversorGenerico;
 
+@PermitAll
 public abstract class  GenericsRest<V, D, E, ID extends Serializable, DAO extends JpaGenericsDao<E, ID>,
         B extends GenericsBo<E, V, ID, DAO>>
         implements CrudRest<V, D, ID> {
@@ -51,6 +53,7 @@ public abstract class  GenericsRest<V, D, E, ID extends Serializable, DAO extend
     public D buscaPorId(@PathParam("id") ID id) {
         return conversor.convertSource(genericsBo.get().buscaPorId(id));
     }
+
 
     @Override
     @POST

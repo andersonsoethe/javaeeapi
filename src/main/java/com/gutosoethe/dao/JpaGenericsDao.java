@@ -3,11 +3,15 @@ package com.gutosoethe.dao;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
 
+import com.gutosoethe.model.Usuario;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 public abstract class JpaGenericsDao<P, ID extends Serializable> implements CrudDao<P, ID> {
@@ -52,5 +56,17 @@ public abstract class JpaGenericsDao<P, ID extends Serializable> implements Crud
     public List<P> findAll() {
         return entityManager.createQuery("Select t From "+
                 persistentClass.getSimpleName() + " t").getResultList();
+    }
+
+    @Transactional(Transactional.TxType.NOT_SUPPORTED)
+    public P findByUsername(String username) {
+        try {
+            String queryString = "SELECT t FROM " + persistentClass.getSimpleName() + " t WHERE t.username = :username";
+            Query query = entityManager.createQuery(queryString);
+            query.setParameter("username", username);
+            return (P) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

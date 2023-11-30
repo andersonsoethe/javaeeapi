@@ -1,30 +1,39 @@
 package com.gutosoethe.rest;
 
-import com.gutosoethe.model.Usuario;
+import com.gutosoethe.bo.UsuarioBo;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.annotation.security.PermitAll;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.Date;
 
 @Path("/auth")
 public class AuthResourceRest {
 
-    private static final String SECRET_KEY =  "teste_jwt";
+    @Inject
+    private UsuarioBo usuarioBo;
+
+    private static final String SECRET_KEY =  "Chave48BitsSecreta";
+//    private static final String SECRET_KEY = Arrays.toString(Keys.secretKeyFor(SignatureAlgorithm.HS256).getEncoded());
+
 
     @POST
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     @PermitAll
     public Response login(@FormParam("username") String username, @FormParam("password") String password){
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Parâmetros inválidos").build();
+        }
         //Bucas usuário no banco com o serivço.
-        if ("usuario".equals(username) && "senha123".equals(password)){
+//        UsuarioBo usuarioBo = new UsuarioRest();
+        if (usuarioBo.userIsValid(username, password)){
             String token = createJWT(username);
             return Response.ok(token).build();
         } else {
@@ -44,5 +53,13 @@ public class AuthResourceRest {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
         return token;
+    }
+
+    @GET
+    @Path("/secure")
+    @RolesAllowed("ADMIN") // Acesso permitido apenas para usuários com a função 'admin'.
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSecureData() {
+        return Response.ok("Dados seguros!").build();
     }
 }

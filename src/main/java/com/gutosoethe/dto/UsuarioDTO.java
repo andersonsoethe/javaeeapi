@@ -1,15 +1,13 @@
 package com.gutosoethe.dto;
 
-import com.gutosoethe.model.Role;
 import com.gutosoethe.vo.RoleVo;
 import com.gutosoethe.vo.UsuarioVo;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class UsuarioDTO implements Serializable {
@@ -26,12 +24,12 @@ public class UsuarioDTO implements Serializable {
     private String password;
 
     @NotNull(message = "O campo role não pode ser nulo")
-    private Set<RoleDTO> roles;
+    private List<RoleDTO> roles;
 
     public UsuarioDTO() {
     }
 
-    public UsuarioDTO(long id, String username, String password, Set<RoleDTO> roles) {
+    public UsuarioDTO(long id, String username, String password, List<RoleDTO> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -43,7 +41,7 @@ public class UsuarioDTO implements Serializable {
         this.username = usuario.getUsername();
         this.password = usuario.getPassword();
         // Inicialize um conjunto de RoleDTO
-        Set<RoleDTO> roleDTOs = new HashSet<>();
+        List<RoleDTO> roleDTOs = new ArrayList<>();
         // Converta cada RoleVo em RoleDTO e adicione ao conjunto
         if (usuario.getRole() != null && !usuario.getRole().isEmpty()) {
             for (RoleVo roleVo : usuario.getRole()) {
@@ -73,11 +71,11 @@ public class UsuarioDTO implements Serializable {
         this.password = password;
     }
 
-    public Set<RoleDTO> getRole() {
+    public List<RoleDTO> getRole() {
         return roles;
     }
 
-    public void setRole(Set<RoleDTO> roles) {
+    public void setRole(List<RoleDTO> roles) {
         this.roles = roles;
     }
 
@@ -90,7 +88,7 @@ public class UsuarioDTO implements Serializable {
     }
 
     public UsuarioVo convert(){
-        Set<RoleVo> roleVos = new HashSet<>();
+        List<RoleVo> roleVos = new ArrayList<>();
         for (RoleDTO role : roles) {
             roleVos.add(role.convert());
         }

@@ -3,22 +3,24 @@ package com.gutosoethe.vo;
 import com.gutosoethe.model.Role;
 import com.gutosoethe.model.Usuario;
 
+import javax.annotation.security.PermitAll;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+@PermitAll
 public class UsuarioVo implements Serializable {
     private static final long serialVersionUID = -6542627582498216112L;
 
     private long id;
     private String username;
     private String password;
-    private Set<RoleVo> roles;
+    private List<RoleVo> roles;
 
     public UsuarioVo() {
     }
 
-    public UsuarioVo(long id, String username, String password, Set<RoleVo> roles) {
+    public UsuarioVo(long id, String username, String password, List<RoleVo> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -31,7 +33,7 @@ public class UsuarioVo implements Serializable {
         this.username = usuario.getUsername();
         this.password = usuario.getPassword();
         // Inicialize um conjunto de RoleVo
-        Set<RoleVo> roleVos = new HashSet<>();
+        List<RoleVo> roleVos = new ArrayList<>();
         // Converta cada Role em RoleVo e adicione ao conjunto
         if (usuario.getRole() != null && !usuario.getRole().isEmpty()) {
             for (Role role : usuario.getRole()) {
@@ -61,11 +63,11 @@ public class UsuarioVo implements Serializable {
         this.password = password;
     }
 
-    public Set<RoleVo> getRole() {
+    public List<RoleVo> getRole() {
         return roles;
     }
 
-    public void setRole(Set<RoleVo> role) {
+    public void setRole(List<RoleVo> role) {
         this.roles = role;
     }
 }

@@ -7,8 +7,8 @@ import com.gutosoethe.vo.RoleVo;
 import com.gutosoethe.vo.UsuarioVo;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class UsuarioBo extends GenericsBo<Usuario, UsuarioVo, Long, UsuarioJpaDao> {
@@ -18,7 +18,7 @@ public class UsuarioBo extends GenericsBo<Usuario, UsuarioVo, Long, UsuarioJpaDa
         Usuario usuario = new Usuario();
         usuario.setUsername(entity.getUsername());
         usuario.setPassword(entity.getPassword());
-        Set<Role> roles = new HashSet<>();
+        List<Role> roles = new ArrayList<>();
         for (RoleVo roleVo : entity.getRole()) {
             roles.add(roleVo.convert());
         }
@@ -36,7 +36,7 @@ public class UsuarioBo extends GenericsBo<Usuario, UsuarioVo, Long, UsuarioJpaDa
             usuario.setPassword(entity.getPassword());
         }
         if (entity.getRole() != null){
-            Set<Role> roles = new HashSet<>();
+            List<Role> roles = new ArrayList<>();
             for (RoleVo roleVo : entity.getRole()) {
                 roles.add(roleVo.convert());
             }
@@ -44,5 +44,15 @@ public class UsuarioBo extends GenericsBo<Usuario, UsuarioVo, Long, UsuarioJpaDa
         }
         jpaGenericsDao.get().update(usuario);
         return conversor.convertSource(usuario);
+    }
+
+    public UsuarioVo buscaPorUsername(String username){
+        Usuario usuario = jpaGenericsDao.get().findByUsername(username);
+        return conversor.convertSource(usuario);
+    }
+
+    public boolean userIsValid(String username, String password){
+        Usuario usuario = jpaGenericsDao.get().findByUsername(username);
+        return username.equals(usuario.getUsername()) && password.equals(usuario.getPassword());
     }
 }

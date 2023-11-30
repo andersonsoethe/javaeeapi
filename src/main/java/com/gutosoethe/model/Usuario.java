@@ -22,12 +22,12 @@ public class Usuario implements Serializable {
     @JoinTable(name = "usuarios_roles",
         joinColumns = {@JoinColumn(name = "usuario_id")},
         inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> roles = new ArrayList<>();
 
     public Usuario() {
     }
 
-    public Usuario(long id, String username, String password, Set<Role> roles) {
+    public Usuario(long id, String username, String password, List<Role>roles) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -54,11 +54,11 @@ public class Usuario implements Serializable {
         this.password = password;
     }
 
-    public Set<Role> getRole() {
+    public List<Role>getRole() {
         return roles;
     }
 
-    public void setRole(Set<Role> roles) {
+    public void setRole(List<Role> roles) {
         this.roles = roles;
     }
 
