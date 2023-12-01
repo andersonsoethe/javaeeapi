@@ -3,14 +3,13 @@ package com.gutosoethe.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.SecurityContext;
 import java.io.IOException;
-import java.security.SignatureException;
-import java.util.Arrays;
+
 
 @WebFilter("/*")
 public class JwtTokenFilter implements Filter {
@@ -31,9 +30,8 @@ public class JwtTokenFilter implements Filter {
                         .parseClaimsJws(token)
                         .getBody();
                 String[] roles = claims.get("roles", String.class).split(",");
-                servletRequest.getServletContext().setUserPrincipal(new ApiPrincipal(claims.getSubject(), roles));
-
-
+//                servletRequest.getServletContext().setUserPrincipal(new ApiPrincipal(claims.getSubject(), roles));
+                
             } catch (ExpiredJwtException e) {
                 e.printStackTrace();
             }

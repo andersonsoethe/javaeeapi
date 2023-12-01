@@ -1,5 +1,6 @@
 package com.gutosoethe.security;
 
+
 import java.security.Principal;
 
 public class ApiPrincipal implements Principal {

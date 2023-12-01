@@ -1,27 +1,26 @@
 <web-app>
-    <!-- Configuração do Filtro JWT -->
-    <filter>
-        <filter-name>jwtTokenFilter</filter-name>
-        <filter-class>com.gutosoethe.security.JwtTokenFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>jwtTokenFilter</filter-name>
-        <url-pattern>/api/auth/secure/</url-pattern>
-    </filter-mapping>
-
-    <!-- Configuração de Restrições de Papéis -->
-    <security-role>
-        <role-name>ADMIN</role-name>
-    </security-role>
-
+<!--    &lt;!&ndash; Configuração do Filtro JWT &ndash;&gt;-->
+<!--    <filter>-->
+<!--        <filter-name>jwtTokenFilter</filter-name>-->
+<!--        <filter-class>com.gutosoethe.security.JwtTokenFilter</filter-class>-->
+<!--    </filter>-->
     <security-constraint>
         <web-resource-collection>
-            <web-resource-name>Protected Resources</web-resource-name>
-            <url-pattern>/api/auth/secure/*</url-pattern>
+            <web-resource-name>Secure Resources</web-resource-name>
+            <url-pattern>/api/auth/secure</url-pattern>
         </web-resource-collection>
         <auth-constraint>
-            <role-name>ADMIN</role-name>
+<!--            <role-name>user</role-name>-->
         </auth-constraint>
     </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>jwtLoginModule</realm-name>
+    </login-config>
+
+    <security-role>
+        <role-name>user</role-name>
+    </security-role>
+
 </web-app>

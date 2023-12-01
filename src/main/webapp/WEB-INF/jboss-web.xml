@@ -1,0 +1,3 @@
+<jboss-web>
+    <security-domain>jwtLoginModule</security-domain>
+</jboss-web>
